@@ -1,4 +1,4 @@
-name: Prospecta-terpek
+name: Prospecta Terpek
 
 on:
   workflow_dispatch:
@@ -6,23 +6,28 @@ on:
     - cron: "*/30 * * * *"
 
 jobs:
-  prospect:
+  prospector:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
-      - name: Descargar proyecto
+      - name: Descargar código
         uses: actions/checkout@v4
 
-      - name: Preparar Python
+      - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: Instalar dependencias
         run: |
-          pip install requests beautifulsoup4
+          python -m pip install --upgrade pip
+          pip install requests
 
-      - name: Ejecutar prospecta-terpek
+      - name: Ejecutar Prospecta Terpek
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
